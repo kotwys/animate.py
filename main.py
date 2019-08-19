@@ -1,26 +1,31 @@
+"""Usage:
+    main.py [-f] <script> [-o <output>]
+    main.py (-h | --help)
+
+Options:
+    -h --help  Show this screen.
+    -o FILE    Output file pattern [default: ./render/%03d.png]
+
+"""
 from os import path
-from sys import argv
+
+from docopt import docopt
+from schema import Schema, SchemaError, And, Or
+
 from process import process
 
-def main():
-    options = argv[1:]
-
-    if not options:
-        print('No script specified')
-        return
-
-    if path.isfile(options[0]):
-        script = options[0]
-    else:
-        print("Script file doesn't exist!")
-        return
-
-    if len(options) > 1:
-        output = options[1]
-    else:
-        output = './render/frame_%04d.png'
-
-    process(script, output)
-
 if __name__ == "__main__":
-    main()
+    arguments = docopt(__doc__)
+
+    schema = Schema({
+        '<script>': And(path.isfile, error='Script should exist!'),
+        '-o': str,
+        '--help': False,
+    })
+
+    try:
+        arguments = schema.validate(arguments)
+    except SchemaError as e:
+        exit(e)
+
+    process(arguments)

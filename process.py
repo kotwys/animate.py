@@ -29,7 +29,7 @@ def generate(module, options):
         yield (frame, im) 
 
 
-def process(script, output):
+def process(args):
     # default values
     options = {
         'mode': 'RGBA'
@@ -41,7 +41,7 @@ def process(script, output):
         options['size'] = movie_size
         options.update(kwargs)
 
-    module = run_path(script, {
+    module = run_path(args['<script>'], {
         'register': register,
     })
 
@@ -50,7 +50,7 @@ def process(script, output):
         return
 
     for (frame, img) in generate(module, options):
-        path = Path(output % frame)
+        path = Path(args['-o'] % frame)
 
         if not path.exists():
             if not path.parent.exists():
