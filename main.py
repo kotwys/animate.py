@@ -1,3 +1,4 @@
+from os import path
 from sys import argv
 from process import process
 
@@ -8,14 +9,18 @@ def main():
         print('No script specified')
         return
 
-    script = options[0]
+    if path.isfile(options[0]):
+        script = options[0]
+    else:
+        print("Script file doesn't exist!")
+        return
 
     if len(options) > 1:
         output = options[1]
     else:
         output = 'auto'
 
-    process()
+    process(script, output)
 
 if __name__ == "__main__":
     main()
