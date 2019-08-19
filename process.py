@@ -1,3 +1,4 @@
+from pathlib import Path
 from runpy import run_path
 from PIL import Image, ImageDraw
 
@@ -26,4 +27,12 @@ def process(script, output):
     draw = ImageDraw.Draw(img)
     module['draw'](draw)
 
-    img.show()
+    path = Path(output % 0)
+
+    if not path.exists():
+        if not path.parent.exists():
+            path.parent.mkdir(parents=True)
+    else:
+        print('Overwritting {}'.format(path))
+
+    img.save(path)

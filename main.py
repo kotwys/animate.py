@@ -18,7 +18,7 @@ def main():
     if len(options) > 1:
         output = options[1]
     else:
-        output = 'auto'
+        output = './render/frame_%04d.png'
 
     process(script, output)
 
