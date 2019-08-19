@@ -4,15 +4,15 @@ from PIL import Image, ImageDraw
 
 def process(script, output):
     # default values
-    size = None
-    mode = 'RGBA'
+    options = {
+        'mode': 'RGBA'
+    }
 
     def register(movie_size, **kwargs):
-        nonlocal size, mode
+        nonlocal options
 
-        size = movie_size
-        if kwargs['mode']:
-            mode = kwargs['mode']
+        options['size'] = movie_size
+        options.update(kwargs)
 
     module = run_path(script, {
         'register': register,
@@ -22,7 +22,7 @@ def process(script, output):
         print('No draw() function in script!')
         return
 
-    img = Image.new(mode, size)
+    img = Image.new(options['mode'], options['size'])
 
     draw = ImageDraw.Draw(img)
     module['draw'](draw)
