@@ -6,7 +6,7 @@ colors = [
     (175, 64, 53)
 ]
 
-def draw(drawing):
+def draw(drawing, state):
     for i in range(5):
         offset = (i + 1) * 20
         topleft = (offset, offset) 
