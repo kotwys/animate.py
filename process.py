@@ -1,5 +1,8 @@
+import logging
 from pathlib import Path
 from runpy import run_path
+import sys
+
 from PIL import Image, ImageDraw
 
 def generate(module, options):
@@ -18,7 +21,7 @@ def generate(module, options):
     has_update = 'update' in module
 
     for frame in range(frames):
-        print(options['size'])
+        logging.info('Rendering frame %d...', frame)
         im = Image.new(options['mode'], options['size'])
         draw = ImageDraw.Draw(im)
 
@@ -46,8 +49,7 @@ def process(args):
     })
 
     if 'draw' not in module:
-        print('No draw() function in script!')
-        return
+        sys.exit('No draw() function in script!')
 
     for (frame, img) in generate(module, options):
         path = Path(args['-o'] % frame)
@@ -56,6 +58,6 @@ def process(args):
             if not path.parent.exists():
                 path.parent.mkdir(parents=True)
         else:
-            print('Overwritting {}'.format(path))
+            logging.warn('Overwriting %s', path)
 
         img.save(path)
