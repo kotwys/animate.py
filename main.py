@@ -1,8 +1,7 @@
-from PIL import Image
+from process import process
 
 def main():
-    img = Image.new('RGBA', (640, 480))
-    img.show()
+    process()
 
 if __name__ == "__main__":
     main()
