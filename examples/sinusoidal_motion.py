@@ -12,7 +12,7 @@ def draw(drawing, state):
 
     drawing.rectangle(
         [0, position, 100, position + 100],
-        fill=(255, 255, 255)
+        fill=255
     )
 
 def init():
