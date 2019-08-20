@@ -4,6 +4,7 @@ from runpy import run_path
 import sys
 
 from PIL import Image, ImageDraw
+from schema import SchemaError
 
 def generate(module, options):
     try:
@@ -14,7 +15,7 @@ def generate(module, options):
         delta = 0
 
     if 'init' in module:
-        state = module['init']()
+        state = module['init'](options['props'])
     else:
         state = None
 
@@ -47,6 +48,19 @@ def process(args):
     module = run_path(args['<script>'], {
         'register': register,
     })
+
+    props = args['--props']
+    
+    if 'schema' in options:
+        schema = options['schema']
+
+        try:
+            props = schema.validate(props)
+        except SchemaError as e:
+            print("Props don't match schema!", file=sys.stderr)
+            sys.exit(e)
+    
+    options['props'] = props
 
     if 'draw' not in module:
         sys.exit('No draw() function in script!')

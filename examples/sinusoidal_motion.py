@@ -15,7 +15,7 @@ def draw(drawing, state):
         fill=255
     )
 
-def init():
+def init(props):
     return 0
 
 register(
