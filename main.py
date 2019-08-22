@@ -20,13 +20,17 @@ from schema import Schema, SchemaError, And, Or, Use
 
 from process import process
 
-__ver__ = "0.3.0"
+__ver__ = "0.3.1"
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version=__ver__)
 
     schema = Schema({
-        '<script>': And(path.isfile, error='Script should exist!'),
+        '<script>': And(
+            And(path.isfile, error='Script should exist!'),
+            And(lambda f: f.endswith('.py'),
+                error='Script should be a python file')
+        ),
         '-o': str,
         '--props': Or(None, Use(json.loads, error='Invalid JSON')),
         '--verbose': bool,
