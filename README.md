@@ -96,4 +96,4 @@ register(
 )
 ```
 
-Other examples may be found in [examples folder][./examples]
+Other examples may be found in [examples folder](examples)
