@@ -3,7 +3,7 @@ from pathlib import Path
 from runpy import run_path
 import sys
 
-from PIL import Image, ImageDraw
+from wand.image import Image
 from schema import SchemaError
 
 def generate(module, options):
@@ -23,26 +23,18 @@ def generate(module, options):
 
     for frame in range(frames):
         logging.info('Rendering frame %d...', frame)
-        im = Image.new(options['mode'], options['size'])
-        draw = ImageDraw.Draw(im)
-
         if frame and has_update:
             state = module['update'](delta, state)
-        
-        module['draw'](draw, state)
-        yield (frame, im) 
+
+        img = module['draw'](state)
+        yield (frame, img)
 
 
 def process(args):
-    # default values
-    options = {
-        'mode': 'RGBA'
-    }
+    options = {}
 
-    def register(movie_size, **kwargs):
+    def register(**kwargs):
         nonlocal options
-
-        options['size'] = movie_size
         options.update(kwargs)
 
     module = run_path(args['<script>'], {
@@ -74,4 +66,6 @@ def process(args):
         else:
             logging.warn('Overwriting %s', path)
 
-        img.save(path)
+        # Autodefine format from string
+        img.save(filename=str(path))
+        img.close()

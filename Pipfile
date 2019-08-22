@@ -6,9 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pillow = "*"
 docopt = "*"
 schema = "*"
+wand = "*"
 
 [requires]
 python_version = "3.6"

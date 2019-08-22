@@ -1,22 +1,29 @@
+from wand.color import Color
+from wand.image import Image
+from wand.drawing import Drawing
+
 colors = [
-    (243, 159, 24),
-    (205, 91, 69),
-    (76, 145, 60),
-    (1, 121, 111),
-    (175, 64, 53)
+    '#f39f18',
+    '#cd5b45',
+    '#4c913c',
+    '#01796f',
+    '#af4035'
 ]
 
-def draw(drawing, state):
-    for i in range(5):
-        offset = (i + 1) * 20
-        topleft = (offset, offset) 
-        bottomright = (200 + offset, 200 + offset)
-        drawing.rectangle(
-            [topleft, bottomright],
-            fill=colors[i]
-        )
+def draw(state):
+    image = Image(
+        width=300, height=300,
+        background=Color('black')
+    )
 
-register(
-    (300, 300),
-    mode='RGB'
-)
+    with Drawing() as draw:
+        for i in range(5):
+            offset = (i + 1) * 20
+            draw.fill_color = Color(colors[i])
+            draw.rectangle(
+                left=offset, top=offset,
+                right=200+offset, bottom=200+offset
+            )
+        draw(image)
+    
+    return image
