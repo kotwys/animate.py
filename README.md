@@ -1,7 +1,7 @@
 # animate.py
 
 Utility to create motion graphics with Python scripts.
-It uses [Wand][wand-py.org] to generate images.
+It uses [Wand](http://wand-py.org) to generate images.
 
 ## Usage
 
