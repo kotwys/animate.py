@@ -12,7 +12,7 @@ class ColorPropsExample(Graphics):
         ) 
 
         with Drawing() as draw:
-            draw.fill_color = Color(self.state['color'])
+            draw.fill_color = Color(self.props['color'])
             draw.rectangle(
                 left=10, top=10,
                 right=290, bottom=290

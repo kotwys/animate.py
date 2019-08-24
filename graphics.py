@@ -1,6 +1,6 @@
 class Graphics:
     def __init__(self, props):
-        self.state = props
+        self.props = props
     
     def update(self, delta):
         pass
