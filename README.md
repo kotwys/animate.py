@@ -22,18 +22,21 @@ declares a schema input will be validated against it.
 ## Scripts
 
 Scripts define how animation's state is changing and how it should be
-rendered.
+rendered. It's represented with a class inherited from `Graphics`.
 
-*State* may be anything. It is optional and will be `None` unless
-`init()` is defined. `init()` takes [props](#options) and creates a new state
-which later will be updated in `update()`. Any of the state functions
-is optional.
+`Graphics` subclasses can contain their data as any other class.
+Properties are stored in `props` attribute by default.
+State should be initialized in a constructor for the first frame.
+Class may define a `update(delta)` method which is then called every
+frame with the delta time that equals to 1 / FPS.
 
-`draw()` function is required. It takes a state and produces a
-`wand.image.Image` for it.
+`draw()` function is required. It creates an image for the current
+frame after `init()` or `update()` is called.
 
-By default animation longs 1 frame and accepts any props.
-`register` hook allows to adjust it. To define multiframe animation
+Class must be passed as a first positional paramater of `register()`.
+
+By default sequence longs 1 frame and accepts any props.
+`register()` parameters allows to adjust it. To define an animation
 you need to specify both `duration` (in seconds) and `fps`. Schema
 is a [Python Schema](https://github.com/keleshev/schema) which
 validates the provided [properties](#options) before execution.
