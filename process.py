@@ -34,6 +34,9 @@ def process(args):
     def register(input_class, **kwargs):
         nonlocal class_, options
 
+        if not issubclass(input_class, Graphics):
+            sys.exit('Script class should inherit from Graphics')
+
         class_ = input_class
         options.update(kwargs)
 
