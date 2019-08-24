@@ -40,7 +40,7 @@ def process(args):
         class_ = input_class
         options.update(kwargs)
 
-    module = run_path(args['<script>'], {
+    run_path(args['<script>'], {
         'register': register,
         'Graphics': Graphics,
     })
