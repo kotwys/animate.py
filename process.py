@@ -27,6 +27,9 @@ def generate(module, options):
             state = module['update'](delta, state)
 
         img = module['draw'](state)
+        if not isinstance(img, Image):
+            sys.exit("draw() should return wand.image.Image")
+
         yield (frame, img)
 
 
