@@ -20,7 +20,7 @@ from schema import Schema, SchemaError, And, Or, Use
 
 from process import process
 
-__ver__ = "0.3.1"
+__ver__ = "0.4.0"
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version=__ver__)
