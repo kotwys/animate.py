@@ -10,20 +10,24 @@ colors = [
     '#af4035'
 ]
 
-def draw(state):
-    image = Image(
-        width=300, height=300,
-        background=Color('black')
-    )
+class BasicExample(Graphics):
+    def draw(self):
+        image = Image(
+            width=300, height=300,
+            background=Color('black')
+        )
 
-    with Drawing() as draw:
-        for i in range(5):
-            offset = (i + 1) * 20
-            draw.fill_color = Color(colors[i])
-            draw.rectangle(
-                left=offset, top=offset,
-                right=200+offset, bottom=200+offset
-            )
-        draw(image)
-    
-    return image
+        with Drawing() as draw:
+            for i in range(5):
+                offset = (i + 1) * 20
+                draw.fill_color = Color(colors[i])
+                draw.rectangle(
+                    left=offset, top=offset,
+                    right=200+offset, bottom=200+offset
+                )
+            draw(image)
+        
+        return image
+
+
+register(BasicExample)
