@@ -4,10 +4,7 @@ from wand.image import Image
 from wand.color import Color
 from wand.drawing import Drawing
 
-class ColorPropsExample:
-    def __init__(self, props):
-        self.state = props
-    
+class ColorPropsExample(Graphics):
     def draw(self):
         image = Image(
             width=300, height=300,

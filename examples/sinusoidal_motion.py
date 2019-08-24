@@ -7,8 +7,9 @@ SCREEN_HEIGHT = 300
 SHAPE_SIDE = 100
 AMPLITUDE = (SCREEN_HEIGHT - SHAPE_SIDE) / 2
 
-class SinusoidalMotion:
+class SinusoidalMotion(Graphics):
     def __init__(self, props):
+        super().__init__(props)
         self.state = 0
     
     def update(self, delta):

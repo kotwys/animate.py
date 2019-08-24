@@ -6,6 +6,8 @@ import sys
 from wand.image import Image
 from schema import SchemaError
 
+from graphics import Graphics
+
 def generate(instance, options):
     try:
         frames = options['duration'] * options['fps']
@@ -37,6 +39,7 @@ def process(args):
 
     module = run_path(args['<script>'], {
         'register': register,
+        'Graphics': Graphics,
     })
 
     props = args['--props']

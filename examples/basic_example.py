@@ -10,10 +10,7 @@ colors = [
     '#af4035'
 ]
 
-class BasicExample:
-    def __init__(self, props):
-        pass
-
+class BasicExample(Graphics):
     def draw(self):
         image = Image(
             width=300, height=300,
