@@ -21,79 +21,21 @@ declares a schema input will be validated against it.
 
 ## Scripts
 
-Scripts must define a `draw()` function which returns a `wand.image.Image`.
-Also there are optional `init()` to initialize state
-and `update()` to update it.
+Scripts define how animation's state is changing and how it should be
+rendered.
 
-Here's the example:
+*State* may be anything. It is optional and will be `None` unless
+`init()` is defined. `init()` takes [props](#options) and creates a new state
+which later will be updated in `update()`. Any of the state functions
+is optional.
 
-```python
-from schema import Schema
-from wand.color import Color
-from wand.image import Image
+`draw()` function is required. It takes a state and produces a
+`wand.image.Image` for it.
 
-def init(props):
-    """
-    Initializes a state
+By default animation longs 1 frame and accepts any props.
+`register` hook allows to adjust it. To define multiframe animation
+you need to specify both `duration` (in seconds) and `fps`. Schema
+is a [Python Schema](https://github.com/keleshev/schema) which
+validates the provided [properties](#options) before execution.
 
-    Arguments:
-    - props - data passed by '--props' option or None.
-    """
-
-    return {
-        'color': props['color']
-    }
-
-def update(delta, state):
-    """
-    Updates a state
-
-    It isn't called at first frame.
-
-    Arguments:
-    - delta - time in seconds from last frame. It's always 1 / FPS.
-    - state - previous frame's state.
-
-    Returns new state
-    """
-
-    return state
-
-def draw(state):
-    """
-    Generates the image
-
-    It's called after update() changes the state.
-
-    Arguments:
-    - state - current frame's state.
-
-    Returns wand.image.Image
-    """
-
-    return Image(
-        width=256, height=256,
-        background=Color(state['color'])
-    )
-
-"""
-Optional register hook
-
-If you don't pass any of duration or fps, animation
-will long 1 frame.
-
-Parameters:
-- duration - how does the animation long in seconds.
-- fps - animation's framerate.
-- schema - Python Schema to validate provided data against.
-"""
-register(
-    duration=20,
-    fps=25,
-    schema=Schema({
-        'color': str
-    })
-)
-```
-
-Other examples may be found in [examples folder](examples)
+Examples may be found in [examples folder](examples)
