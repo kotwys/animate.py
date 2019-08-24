@@ -16,11 +16,9 @@ def generate(instance, options):
         frames = 1
         delta = 0
 
-    has_update = hasattr(instance, 'update')
-
     for frame in range(frames):
         logging.info('Rendering frame %d...', frame)
-        if frame and has_update:
+        if frame:
             instance.update(delta)
 
         img = instance.draw()
