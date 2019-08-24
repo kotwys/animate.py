@@ -6,7 +6,7 @@ import sys
 from wand.image import Image
 from schema import SchemaError
 
-def generate(module, options):
+def generate(instance, options):
     try:
         frames = options['duration'] * options['fps']
         delta = 1 / options['fps']
@@ -14,27 +14,25 @@ def generate(module, options):
         frames = 1
         delta = 0
 
-    if 'init' in module:
-        state = module['init'](options['props'])
-    else:
-        state = None
-
-    has_update = 'update' in module
+    has_update = hasattr(instance, 'update')
 
     for frame in range(frames):
         logging.info('Rendering frame %d...', frame)
         if frame and has_update:
-            state = module['update'](delta, state)
+            instance.update(delta)
 
-        img = module['draw'](state)
+        img = instance.draw()
         yield (frame, img)
 
 
 def process(args):
     options = {}
+    class_ = None
 
-    def register(**kwargs):
-        nonlocal options
+    def register(input_class, **kwargs):
+        nonlocal class_, options
+
+        class_ = input_class
         options.update(kwargs)
 
     module = run_path(args['<script>'], {
@@ -52,12 +50,7 @@ def process(args):
             print("Props don't match schema!", file=sys.stderr)
             sys.exit(e)
     
-    options['props'] = props
-
-    if 'draw' not in module:
-        sys.exit('No draw() function in script!')
-
-    for (frame, img) in generate(module, options):
+    for (frame, img) in generate(class_(props), options):
         path = Path(args['-o'] % frame)
 
         if not path.exists():
